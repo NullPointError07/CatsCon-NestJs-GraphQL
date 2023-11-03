@@ -8,6 +8,7 @@ import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin
 import { MongooseModule, MongooseModuleOptions } from '@nestjs/mongoose';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { UserModule } from './user/user.module';
+import { CatsModule } from './cats/cats.module';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { UserModule } from './user/user.module';
       cache: true,
     }),
     UserModule,
+    CatsModule,
   ],
   controllers: [],
   providers: [AppService, AppResolver],
