@@ -1,6 +1,7 @@
 import { InputType, Field } from '@nestjs/graphql';
 import * as GraphQLUpload from 'graphql-upload/GraphQLUpload.js';
-import { FileUpload } from './upload-type';
+import * as Upload from 'graphql-upload/Upload.js';
+// import { FileUpload } from './upload-type';
 
 @InputType()
 export class CreateCatInput {
@@ -9,5 +10,5 @@ export class CreateCatInput {
   @Field(() => String)
   breed: string;
   @Field(() => GraphQLUpload)
-  image: Promise<FileUpload>;
+  image: Upload;
 }

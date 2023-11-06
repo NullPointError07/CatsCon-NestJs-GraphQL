@@ -16,3 +16,5 @@ export class UpdateUserInput extends PartialType(CreateUserInput) {
   @Field(() => String)
   address?: string;
 }
+
+

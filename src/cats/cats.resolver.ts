@@ -11,8 +11,8 @@ export class CatsResolver {
   @Mutation(() => String, { name: 'createImage' })
   createCat(@Args('createCatInput') createCatInput: CreateCatInput) {
     console.log('cat input test', createCatInput);
-    return 'hello';
-    // return this.catsService.createCat(createCatInput);
+    // return 'hello';
+    return this.catsService.createCat(createCatInput);
   }
 
   @Query(() => [Cat], { name: 'cats' })
