@@ -3,7 +3,7 @@
     "builds": [{ "src": "dist/main.js", "use": "@vercel/node" }],
     "routes": [{ "src": "/(.*)", "dest": "dist/main.js" }],
     "env": {
-      "GRAPHQL_ENDPOINT": "http://localhost:3000/graphql",
+      "GRAPHQL_ENDPOINT": "http://localhost:3000/graphql"
     }
   }
   
