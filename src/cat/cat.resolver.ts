@@ -1,37 +1,35 @@
 import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
-import { CatsService } from './cats.service';
+import { CatService } from './cat.service';
 import { Cat } from './entities/cat.entity';
 import { CreateCatInput } from './dto/create-cat.input';
 // import { UpdateCatInput } from './dto/update-cat.input';
 
 @Resolver(() => Cat)
-export class CatsResolver {
-  constructor(private readonly catsService: CatsService) {}
+export class CatResolver {
+  constructor(private readonly catService: CatService) {}
 
-  @Mutation(() => String, { name: 'createImage' })
+  @Mutation(() => Cat)
   createCat(@Args('createCatInput') createCatInput: CreateCatInput) {
-    console.log('cat input test', createCatInput);
-    // return 'hello';
-    return this.catsService.createCat(createCatInput);
+    return this.catService.createCat(createCatInput);
   }
 
-  @Query(() => [Cat], { name: 'cats' })
+  @Query(() => [Cat], { name: 'cat' })
   findAll() {
-    return this.catsService.findAll();
+    return this.catService.findAll();
   }
 
   @Query(() => Cat, { name: 'cat' })
   findOne(@Args('id', { type: () => Int }) id: number) {
-    return this.catsService.findOne(id);
+    return this.catService.findOne(id);
   }
 
   // @Mutation(() => Cat)
   // updateCat(@Args('updateCatInput') updateCatInput: UpdateCatInput) {
-  //   return this.catsService.update(updateCatInput.id, updateCatInput);
+  //   return this.catService.update(updateCatInput.id, updateCatInput);
   // }
 
   @Mutation(() => Cat)
   removeCat(@Args('id', { type: () => Int }) id: number) {
-    return this.catsService.remove(id);
+    return this.catService.remove(id);
   }
 }

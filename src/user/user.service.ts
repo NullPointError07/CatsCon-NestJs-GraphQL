@@ -13,7 +13,9 @@ export class UserService {
   ) {}
 
   createUser(createUserInput: CreateUserInput) {
+    console.log('checking create user', createUserInput);
     const createUser = new this.userModel(createUserInput);
+
     return createUser.save();
   }
 

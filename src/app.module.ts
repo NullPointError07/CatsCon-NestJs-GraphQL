@@ -8,10 +8,13 @@ import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin
 import { MongooseModule, MongooseModuleOptions } from '@nestjs/mongoose';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { UserModule } from './user/user.module';
-import { CatsModule } from './cats/cats.module';
-
+import { CatModule } from './cat/cat.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
 @Module({
   imports: [
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'uploads'),
+    }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
@@ -22,8 +25,6 @@ import { CatsModule } from './cats/cats.module';
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => {
-        console.log('ENV VAR', configService.get('MONGO_URI'));
-
         const options: MongooseModuleOptions = {
           uri: configService.get<string>('MONGO_URI'),
         };
@@ -34,7 +35,7 @@ import { CatsModule } from './cats/cats.module';
       cache: true,
     }),
     UserModule,
-    CatsModule,
+    CatModule,
   ],
   controllers: [],
   providers: [AppService, AppResolver],

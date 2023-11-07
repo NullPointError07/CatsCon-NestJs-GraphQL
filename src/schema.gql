@@ -13,6 +13,7 @@ type User {
 }
 
 type Cat {
+  _id: String!
   name: String!
   breed: String!
   image: String!
@@ -22,7 +23,6 @@ type Query {
   getHello: String!
   users: [User!]!
   userById(id: String!): User!
-  cats: [Cat!]!
   cat(id: Int!): Cat!
 }
 
@@ -30,7 +30,7 @@ type Mutation {
   createUser(createUserInput: CreateUserInput!): User!
   updateUser(updateUserInput: UpdateUserInput!): User!
   removeUser(id: Int!): User!
-  createImage(createCatInput: CreateCatInput!): String!
+  createCat(createCatInput: CreateCatInput!): Cat!
   removeCat(id: Int!): Cat!
 }
 
