@@ -1,4 +1,4 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { UserService } from './user.service';
 import { User } from './entities/user.entity';
 import { CreateUserInput } from './dto/create-user.input';
@@ -15,15 +15,15 @@ export class UserResolver {
   }
 
   @Query(() => [User], { name: 'users' })
-  findAll() {
-    return this.userService.findAll();
+  findAllUser() {
+    return this.userService.findAllUser();
   }
 
   @Query(() => User, { name: 'userById' })
-  getUserById(
-    @Args('id', { type: () => String }) id: MongooseSchema.Types.ObjectId,
+  findUserById(
+    @Args('userId', { type: () => String }) id: MongooseSchema.Types.ObjectId,
   ) {
-    return this.userService.getUserById(id);
+    return this.userService.findUserById(id);
   }
 
   @Mutation(() => User)
@@ -31,9 +31,9 @@ export class UserResolver {
     return this.userService.updateUser(updateUserInput._id, updateUserInput);
   }
 
-  @Mutation(() => User)
+  @Mutation(() => String,{name:"removeuserFromUserTable"})
   removeUser(
-    @Args('id', { type: () => Int }) id: MongooseSchema.Types.ObjectId,
+    @Args('userId', { type: () => String }) id: MongooseSchema.Types.ObjectId,
   ) {
     return this.userService.deleteUser(id);
   }

@@ -3,7 +3,7 @@
 # ------------------------------------------------------
 
 type User {
-  _id: String!
+  _id: String
   firstName: String!
   lastName: String!
   age: Int!
@@ -22,14 +22,14 @@ type Cat {
 type Query {
   getHello: String!
   users: [User!]!
-  userById(id: String!): User!
+  userById(userId: String!): User!
   cat(id: Int!): Cat!
 }
 
 type Mutation {
   createUser(createUserInput: CreateUserInput!): User!
   updateUser(updateUserInput: UpdateUserInput!): User!
-  removeUser(id: Int!): User!
+  removeuserFromUserTable(userId: String!): String!
   createCat(createCatInput: CreateCatInput!): Cat!
   removeCat(id: Int!): Cat!
 }

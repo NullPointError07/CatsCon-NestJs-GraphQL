@@ -26,7 +26,7 @@ export class CatService {
     const newFilename = `${Date.now()}-${filename}`;
     // console.log('new file name', newFilename);
 
-    const dirPath = join(process.cwd(), 'uploads');
+    const dirPath = join(process.cwd(), '/uploads');
     // console.log('directory path', dirPath);
 
     if (!existsSync(dirPath)) {

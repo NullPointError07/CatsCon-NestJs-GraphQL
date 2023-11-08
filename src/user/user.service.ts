@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
 import { InjectModel } from '@nestjs/mongoose';
@@ -13,17 +13,15 @@ export class UserService {
   ) {}
 
   createUser(createUserInput: CreateUserInput) {
-    console.log('checking create user', createUserInput);
     const createUser = new this.userModel(createUserInput);
-
     return createUser.save();
   }
 
-  findAll() {
-    return `This action returns all user`;
+  findAllUser() {
+    return this.userModel.find().exec();
   }
 
-  getUserById(id: MongooseSchema.Types.ObjectId) {
+  findUserById(id: MongooseSchema.Types.ObjectId) {
     return this.userModel.findById(id);
   }
 
@@ -34,7 +32,17 @@ export class UserService {
     return this.userModel.findByIdAndUpdate(id, updateUserInput, { new: true });
   }
 
-  deleteUser(id: MongooseSchema.Types.ObjectId) {
-    return this.userModel.deleteOne({ _id: id });
+ async  deleteUser(id: MongooseSchema.Types.ObjectId) {
+    // return this.userModel.deleteOne({ _id: id });
+    try {
+      const user = await this.userModel.findById(id).exec();
+      // console.log(user)
+      if (!user) return 'User Not Found';
+      await this.userModel.findByIdAndDelete(id).exec();
+
+      return 'Successful';
+    } catch (error) {
+      throw new NotFoundException('User Not Found');
+    }
   }
 }

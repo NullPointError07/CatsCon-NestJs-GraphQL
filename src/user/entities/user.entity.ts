@@ -5,7 +5,7 @@ import { Document, Schema as MongooseSchema } from 'mongoose';
 @ObjectType()
 @Schema()
 export class User {
-  @Field(() => String)
+  @Field(() => String,{nullable:true})
   _id: MongooseSchema.Types.ObjectId;
 
   @Field(() => String)
