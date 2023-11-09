@@ -5,7 +5,7 @@ export class CreateUserInput {
   @Field(() => String)
   firstName: string;
 
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   lastName: string;
 
   @Field(() => Int)
@@ -17,6 +17,6 @@ export class CreateUserInput {
   @Field(() => String)
   password: string;
 
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   address: string;
 }

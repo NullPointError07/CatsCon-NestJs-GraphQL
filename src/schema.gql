@@ -28,30 +28,28 @@ type Query {
 
 type Mutation {
   createUser(createUserInput: CreateUserInput!): User!
-  updateUser(updateUserInput: UpdateUserInput!): User!
-  removeuserFromUserTable(userId: String!): String!
+  updateUserFromUserDocument(updateUserInput: UpdateUserInput!): User!
+  removeUserFromUserDocument(userId: String!): String!
+  deleteOneField(userId: String!, fieldToDelete: String!): String!
   createCat(createCatInput: CreateCatInput!): Cat!
   removeCat(id: Int!): Cat!
 }
 
 input CreateUserInput {
   firstName: String!
-  lastName: String!
+  lastName: String
   age: Int!
   email: String!
   password: String!
-  address: String!
+  address: String
 }
 
 input UpdateUserInput {
   firstName: String
   lastName: String
   age: Int
-  email: String!
-  password: String
-  address: String!
+  address: String
   _id: String!
-  name: String!
 }
 
 input CreateCatInput {

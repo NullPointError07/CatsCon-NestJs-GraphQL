@@ -25,22 +25,62 @@ export class UserService {
     return this.userModel.findById(id);
   }
 
-  updateUser(
+  async updateUser(
     id: MongooseSchema.Types.ObjectId,
     updateUserInput: UpdateUserInput,
   ) {
-    return this.userModel.findByIdAndUpdate(id, updateUserInput, { new: true });
-  }
-
- async  deleteUser(id: MongooseSchema.Types.ObjectId) {
-    // return this.userModel.deleteOne({ _id: id });
     try {
       const user = await this.userModel.findById(id).exec();
-      // console.log(user)
+      console.log(user);
+
+      // const deleteAdrees = user.address;
+      // console.log(deleteAdrees);
+
+      // delete user.address
+
+      if (!user) throw new NotFoundException('User Not Found');
+      return this.userModel.findByIdAndUpdate(id, updateUserInput, {
+        new: true,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async deleteUser(id: MongooseSchema.Types.ObjectId) {
+    try {
+      const user = await this.userModel.findById(id).exec();
+
       if (!user) return 'User Not Found';
       await this.userModel.findByIdAndDelete(id).exec();
 
-      return 'Successful';
+      return 'Successfully deleted user';
+    } catch (error) {
+      throw new NotFoundException('User Not Found');
+    }
+  }
+
+  async deleteOneField(
+    id: MongooseSchema.Types.ObjectId,
+    fieldToDelete: string,
+  ) {
+    try {
+      const user = await this.userModel.findById(id).exec();
+
+      if (!user) {
+        return 'User Not Found';
+      }
+
+      if (user[fieldToDelete] !== undefined) {
+        const updateQuery = { $unset: { [fieldToDelete]: 1 } };
+
+        await this.userModel
+          .findByIdAndUpdate(id, updateQuery, { new: true })
+          .exec();
+        return `Successfully deleted ${fieldToDelete} from user`;
+      } else {
+        return `${fieldToDelete} not found in user`;
+      }
     } catch (error) {
       throw new NotFoundException('User Not Found');
     }

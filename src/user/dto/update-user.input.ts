@@ -1,20 +1,11 @@
 import { CreateUserInput } from './create-user.input';
-import { InputType, Field, PartialType } from '@nestjs/graphql';
+import { InputType, Field, OmitType, PartialType } from '@nestjs/graphql';
 import { Schema as MongooseSchema } from 'mongoose';
 
 @InputType()
-export class UpdateUserInput extends PartialType(CreateUserInput) {
+export class UpdateUserInput extends PartialType(
+  OmitType(CreateUserInput, ['password', 'email']),
+) {
   @Field(() => String)
   _id: MongooseSchema.Types.ObjectId;
-
-  @Field(() => String)
-  name?: string;
-
-  @Field(() => String)
-  email?: string;
-
-  @Field(() => String)
-  address?: string;
 }
-
-

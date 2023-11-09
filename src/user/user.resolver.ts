@@ -26,15 +26,29 @@ export class UserResolver {
     return this.userService.findUserById(id);
   }
 
-  @Mutation(() => User)
+  @Mutation(() => User, { name: 'updateUserFromUserDocument' })
   updateUser(@Args('updateUserInput') updateUserInput: UpdateUserInput) {
     return this.userService.updateUser(updateUserInput._id, updateUserInput);
   }
 
-  @Mutation(() => String,{name:"removeuserFromUserTable"})
+  @Mutation(() => String, { name: 'removeUserFromUserDocument' })
   removeUser(
     @Args('userId', { type: () => String }) id: MongooseSchema.Types.ObjectId,
   ) {
     return this.userService.deleteUser(id);
+  }
+
+  @Mutation(() => String, { name: 'deleteOneField' })
+  async deleteOneField(
+    @Args('userId', { type: () => String }) id: MongooseSchema.Types.ObjectId,
+    @Args('fieldToDelete') fieldToDelete: string,
+  ) {
+    try {
+      const result = await this.userService.deleteOneField(id, fieldToDelete);
+      return result;
+    } catch (error) {
+      console.log(error);
+      throw new Error('Failed to delete field');
+    }
   }
 }
