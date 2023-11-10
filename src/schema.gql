@@ -20,7 +20,6 @@ type Cat {
 }
 
 type Query {
-  getHello: String!
   users: [User!]!
   userById(userId: String!): User!
   cat(id: Int!): Cat!

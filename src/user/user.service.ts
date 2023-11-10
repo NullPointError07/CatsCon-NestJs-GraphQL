@@ -25,6 +25,10 @@ export class UserService {
     return this.userModel.findById(id);
   }
 
+  async findOneByEmail(email: string) {
+    return this.userModel.findOne({ email });
+  }
+
   async updateUser(
     id: MongooseSchema.Types.ObjectId,
     updateUserInput: UpdateUserInput,
@@ -68,7 +72,7 @@ export class UserService {
       const user = await this.userModel.findById(id).exec();
 
       if (!user) {
-        return 'User Not Found';
+        throw new NotFoundException('User Not Found');
       }
 
       if (user[fieldToDelete] !== undefined) {
