@@ -1,14 +1,16 @@
 import { InputType, Int, Field } from '@nestjs/graphql';
+import * as GraphQLUpload from 'graphql-upload/GraphQLUpload.js';
+import * as Upload from 'graphql-upload/Upload.js';
 
 @InputType()
 export class CreateUserInput {
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   firstName: string;
 
   @Field(() => String, { nullable: true })
   lastName: string;
 
-  @Field(() => Int)
+  @Field(() => Int, { nullable: true })
   age: number;
 
   @Field(() => String)
@@ -17,6 +19,15 @@ export class CreateUserInput {
   @Field(() => String)
   password: string;
 
+  @Field(() => String)
+  confirmPassword: string;
+
   @Field(() => String, { nullable: true })
   address: string;
+
+  @Field(() => String, { nullable: true })
+  bio: string;
+
+  @Field(() => GraphQLUpload)
+  profilePicture?: Upload;
 }

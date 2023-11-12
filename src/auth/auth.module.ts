@@ -8,7 +8,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
   providers: [AuthService, AuthResolver, JwtService],
-  imports:[
+  imports: [
     UserModule,
     PassportModule,
     ConfigModule,
@@ -19,12 +19,12 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
         const properties: JwtModuleOptions = {
           secret: confingService.get<string>('JWT_SECRET'),
           signOptions: {
-            expiresIn: '24h'
-          }
-        }
-        return properties
-      }
-    })
-  ]
+            expiresIn: '24h',
+          },
+        };
+        return properties;
+      },
+    }),
+  ],
 })
 export class AuthModule {}

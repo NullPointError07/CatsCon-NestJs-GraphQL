@@ -5,7 +5,7 @@ import { Document, Schema as MongooseSchema } from 'mongoose';
 @ObjectType()
 @Schema()
 export class User {
-  @Field(() => String,{nullable:true})
+  @Field(() => String, { nullable: true })
   _id: MongooseSchema.Types.ObjectId;
 
   @Field(() => String)
@@ -30,7 +30,19 @@ export class User {
 
   @Field(() => String)
   @Prop()
+  confirmPassword: string;
+
+  @Field(() => String)
+  @Prop()
   address: string;
+
+  @Field(() => String)
+  @Prop()
+  bio: string;
+
+  @Field(() => String)
+  @Prop()
+  profilePicture?: string;
 }
 
 export type UserDocument = User & Document;
