@@ -28,6 +28,6 @@ export class CreateUserInput {
   @Field(() => String, { nullable: true })
   bio: string;
 
-  @Field(() => GraphQLUpload)
+  @Field(() => GraphQLUpload, { nullable: true })
   profilePicture?: Upload;
 }
