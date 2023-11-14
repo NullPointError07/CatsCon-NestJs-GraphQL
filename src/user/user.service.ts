@@ -39,7 +39,7 @@ export class UserService {
   }
 
   async findOneByEmail(email: string) {
-    return this.userModel.findOne({ email });
+    return await this.userModel.findOne({ email });
   }
 
   async updateUser(

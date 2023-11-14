@@ -29,7 +29,8 @@ type LoginUserResponse {
 type Query {
   usersAll: [User!]!
   userById(userId: String!): User!
-  cat(id: Int!): Cat!
+  cat: [Cat!]!
+  findCatById(catId: String!): Cat!
 }
 
 type Mutation {
@@ -55,6 +56,7 @@ input UpdateUserInput {
 scalar Upload
 
 input CreateCatInput {
+  creator: String
   name: String!
   breed: String!
   image: Upload!

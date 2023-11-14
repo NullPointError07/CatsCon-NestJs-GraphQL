@@ -4,8 +4,8 @@ import { join } from 'path';
 import { createWriteStream, existsSync, mkdirSync } from 'fs';
 import { InjectModel } from '@nestjs/mongoose';
 import { Cat, CatDocument } from './entities/cat.entity';
-import { Model } from 'mongoose';
-import { CurrentUser } from 'src/auth/dto/current-user';
+import { Model, Schema as MongooseSchema } from 'mongoose';
+// import { CurrentUser } from 'src/auth/dto/current-user';
 
 // import { UpdateCatInput } from './dto/update-cat.input';
 
@@ -16,8 +16,9 @@ export class CatService {
     private catModel: Model<CatDocument>,
   ) {}
 
-  async createCat(createCatInput: CreateCatInput, @CurrentUser() user: any) {
-    console.log('do i get any user', user);
+  // @CurrentUser() user: any
+  async createCat(createCatInput: CreateCatInput) {
+    // console.log('do i get any user', user);
 
     const { image } = createCatInput;
     const { filename, createReadStream } = await image;
@@ -39,9 +40,9 @@ export class CatService {
     createCatInput.image = imageURL;
 
     // cat Data
-    const catData = { ...createCatInput, creator: user._id };
+    // const catData = { ...createCatInput, creator: user.id };
 
-    const createCat = new this.catModel(catData);
+    const createCat = new this.catModel(createCatInput);
     return createCat.save();
   }
 
@@ -49,8 +50,8 @@ export class CatService {
     return `This action returns all cat`;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} cat`;
+  findCatById(id: MongooseSchema.Types.ObjectId) {
+    return this.catModel.findById(id);
   }
 
   // update(id: number, updateCatInput: UpdateCatInput) {

@@ -11,7 +11,7 @@ export class Cat {
 
   @Field(() => User)
   @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'User' })
-  creator: MongooseSchema.Types.ObjectId | User;
+  creator: User;
 
   @Field(() => String)
   @Prop()

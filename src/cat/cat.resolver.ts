@@ -2,7 +2,8 @@ import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
 import { CatService } from './cat.service';
 import { Cat } from './entities/cat.entity';
 import { CreateCatInput } from './dto/create-cat.input';
-import { CurrentUser } from 'src/auth/dto/current-user';
+// import { CurrentUser } from 'src/auth/dto/current-user';
+import { Schema as MongooseSchema } from 'mongoose';
 // import { UpdateCatInput } from './dto/update-cat.input';
 
 @Resolver(() => Cat)
@@ -12,9 +13,9 @@ export class CatResolver {
   @Mutation(() => Cat)
   createCat(
     @Args('createCatInput') createCatInput: CreateCatInput,
-    @CurrentUser() user: any,
+    // @CurrentUser() user: any,
   ): Promise<Cat> {
-    return this.catService.createCat(createCatInput, user);
+    return this.catService.createCat(createCatInput);
   }
 
   @Query(() => [Cat], { name: 'cat' })
@@ -22,9 +23,12 @@ export class CatResolver {
     return this.catService.findAll();
   }
 
-  @Query(() => Cat, { name: 'cat' })
-  findOne(@Args('id', { type: () => Int }) id: number) {
-    return this.catService.findOne(id);
+  @Query(() => Cat, { name: 'findCatById' })
+  findCatById(
+    @Args('catId', { type: () => String })
+    id: MongooseSchema.Types.ObjectId,
+  ) {
+    return this.catService.findCatById(id);
   }
 
   // @Mutation(() => Cat)
