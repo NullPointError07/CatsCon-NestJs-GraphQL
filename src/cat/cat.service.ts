@@ -5,6 +5,7 @@ import { createWriteStream, existsSync, mkdirSync } from 'fs';
 import { InjectModel } from '@nestjs/mongoose';
 import { Cat, CatDocument } from './entities/cat.entity';
 import { Model } from 'mongoose';
+import { CurrentUser } from 'src/auth/dto/current-user';
 
 // import { UpdateCatInput } from './dto/update-cat.input';
 
@@ -15,38 +16,32 @@ export class CatService {
     private catModel: Model<CatDocument>,
   ) {}
 
-  async createCat(createCatInput: CreateCatInput) {
+  async createCat(createCatInput: CreateCatInput, @CurrentUser() user: any) {
+    console.log('do i get any user', user);
+
     const { image } = createCatInput;
-
     const { filename, createReadStream } = await image;
-
     const ReadStream = createReadStream();
-    // console.log('what is read stream', ReadStream);
 
     const newFilename = `${Date.now()}-${filename}`;
-    // console.log('new file name', newFilename);
-
     const dirPath = join(process.cwd(), '/uploads');
-    // console.log('directory path', dirPath);
 
     if (!existsSync(dirPath)) {
       mkdirSync(dirPath, { recursive: true });
     }
 
     const writeSteam = createWriteStream(`${dirPath}/${newFilename}`);
-    // console.log('what is write stream', writeSteam);
-
     await ReadStream.pipe(writeSteam);
 
     const baseURL = process.env.BASE_URL;
-
     const imageURL = `${baseURL}/${newFilename}`;
 
     createCatInput.image = imageURL;
 
-    console.log('image string ', createCatInput);
+    // cat Data
+    const catData = { ...createCatInput, creator: user._id };
 
-    const createCat = new this.catModel(createCatInput);
+    const createCat = new this.catModel(catData);
     return createCat.save();
   }
 

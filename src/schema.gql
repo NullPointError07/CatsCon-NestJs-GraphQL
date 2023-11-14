@@ -15,6 +15,7 @@ type User {
 
 type Cat {
   _id: String!
+  creator: User!
   name: String!
   breed: String!
   image: String!
