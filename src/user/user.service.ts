@@ -1,9 +1,15 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
 import { InjectModel } from '@nestjs/mongoose';
 import { User, UserDocument } from './entities/user.entity';
 import { Model, Schema as MongooseSchema } from 'mongoose';
+import { join } from 'path';
+import { createWriteStream, existsSync, mkdirSync } from 'fs';
 
 @Injectable()
 export class UserService {
@@ -13,8 +19,15 @@ export class UserService {
   ) {}
 
   createUser(createUserInput: CreateUserInput) {
-    const createUser = new this.userModel(createUserInput);
-    return createUser.save();
+    try {
+      const createUser = new this.userModel(createUserInput);
+      return createUser.save();
+    } catch (error) {
+      throw new BadRequestException({
+        message: 'Email Duplicated! Try another email',
+        status: 404,
+      });
+    }
   }
 
   findAllUser() {
@@ -35,14 +48,26 @@ export class UserService {
   ) {
     try {
       const user = await this.userModel.findById(id).exec();
-      console.log(user);
-
-      // const deleteAdrees = user.address;
-      // console.log(deleteAdrees);
-
-      // delete user.address
-
       if (!user) throw new NotFoundException('User Not Found');
+
+      const { profilePicture } = updateUserInput;
+      const { filename, createReadStream } = await profilePicture;
+      const ReadStream = createReadStream();
+      const newFilename = `${Date.now()}-${filename}`;
+      const dirPath = join(process.cwd(), '/uploads/profilePic');
+
+      if (!existsSync(dirPath)) {
+        mkdirSync(dirPath, { recursive: true });
+      }
+
+      const writeSteam = createWriteStream(`${dirPath}/${newFilename}`);
+      await ReadStream.pipe(writeSteam);
+
+      const baseURL = process.env.BASE_URL;
+      const imageURL = `${baseURL}/${newFilename}`;
+
+      updateUserInput.profilePicture = imageURL;
+
       return this.userModel.findByIdAndUpdate(id, updateUserInput, {
         new: true,
       });
@@ -51,23 +76,23 @@ export class UserService {
     }
   }
 
-  async deleteUser(id: MongooseSchema.Types.ObjectId) {
+  async deleteUser(id: MongooseSchema.Types.ObjectId): Promise<User> {
     try {
       const user = await this.userModel.findById(id).exec();
 
-      if (!user) return 'User Not Found';
-      await this.userModel.findByIdAndDelete(id).exec();
-
-      return 'Successfully deleted user';
+      if (!user) {
+        throw new NotFoundException({
+          message: 'User Not Found By Your Id',
+          status: 404,
+        });
+      }
+      return await this.userModel.findByIdAndDelete(id).exec();
     } catch (error) {
-      throw new NotFoundException('User Not Found');
+      throw new NotFoundException(error.message);
     }
   }
 
-  async deleteOneField(
-    id: MongooseSchema.Types.ObjectId,
-    fieldToDelete: string,
-  ) {
+  async deleteField(id: MongooseSchema.Types.ObjectId, fieldToDelete: string) {
     try {
       const user = await this.userModel.findById(id).exec();
 

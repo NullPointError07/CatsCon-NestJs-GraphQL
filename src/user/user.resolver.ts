@@ -1,7 +1,7 @@
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { UserService } from './user.service';
 import { User } from './entities/user.entity';
-import { CreateUserInput } from './dto/create-user.input';
+// import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
 import { Schema as MongooseSchema } from 'mongoose';
 
@@ -9,12 +9,12 @@ import { Schema as MongooseSchema } from 'mongoose';
 export class UserResolver {
   constructor(private readonly userService: UserService) {}
 
-  @Mutation(() => User)
-  createUser(@Args('createUserInput') createUserInput: CreateUserInput) {
-    return this.userService.createUser(createUserInput);
-  }
+  // @Mutation(() => User)
+  // createUser(@Args('createUserInput') createUserInput: CreateUserInput) {
+  //   return this.userService.createUser(createUserInput);
+  // }
 
-  @Query(() => [User], { name: 'users' })
+  @Query(() => [User], { name: 'usersAll' })
   findAllUser() {
     return this.userService.findAllUser();
   }
@@ -26,25 +26,27 @@ export class UserResolver {
     return this.userService.findUserById(id);
   }
 
-  @Mutation(() => User, { name: 'updateUserFromUserDocument' })
+  // update user
+  @Mutation(() => User, { name: 'updateUserFromUserDoc' })
   updateUser(@Args('updateUserInput') updateUserInput: UpdateUserInput) {
     return this.userService.updateUser(updateUserInput._id, updateUserInput);
   }
 
-  @Mutation(() => String, { name: 'removeUserFromUserDocument' })
-  removeUser(
+  // delete user
+  @Mutation(() => User, { name: 'deleteUserFromUserDoc' })
+  async deleteUser(
     @Args('userId', { type: () => String }) id: MongooseSchema.Types.ObjectId,
-  ) {
-    return this.userService.deleteUser(id);
+  ): Promise<User> {
+    return await this.userService.deleteUser(id);
   }
 
-  @Mutation(() => String, { name: 'deleteOneField' })
-  async deleteOneField(
+  @Mutation(() => String, { name: 'deleteFieldFromUserDoc' })
+  async deleteField(
     @Args('userId', { type: () => String }) id: MongooseSchema.Types.ObjectId,
     @Args('fieldToDelete') fieldToDelete: string,
   ) {
     try {
-      const result = await this.userService.deleteOneField(id, fieldToDelete);
+      const result = await this.userService.deleteField(id, fieldToDelete);
       return result;
     } catch (error) {
       console.log(error);

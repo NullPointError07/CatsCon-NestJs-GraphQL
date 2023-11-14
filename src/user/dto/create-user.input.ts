@@ -4,14 +4,8 @@ import * as Upload from 'graphql-upload/Upload.js';
 
 @InputType()
 export class CreateUserInput {
-  @Field(() => String, { nullable: true })
-  firstName: string;
-
-  @Field(() => String, { nullable: true })
-  lastName: string;
-
-  @Field(() => Int, { nullable: true })
-  age: number;
+  @Field(() => String)
+  userName: string;
 
   @Field(() => String)
   email: string;
@@ -19,8 +13,11 @@ export class CreateUserInput {
   @Field(() => String)
   password: string;
 
-  @Field(() => String)
-  confirmPassword: string;
+  // @Field(() => String)
+  // confirmPassword: string;
+
+  @Field(() => Int, { nullable: true })
+  age: number;
 
   @Field(() => String, { nullable: true })
   address: string;

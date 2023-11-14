@@ -19,9 +19,6 @@ export class AuthService {
     const { email, password } = loginUserInput;
 
     const user = await this.userService.findOneByEmail(email);
-
-    console.log(user);
-
     const hasMatched = await bcrypt.compare(password, user?.password);
 
     if (user && hasMatched) {
@@ -36,7 +33,7 @@ export class AuthService {
       authToken: this.jwtService.sign(
         {
           email: user.email,
-          name: user.firstName,
+          name: user.userName,
           sub: user._id,
         },
         {
@@ -47,9 +44,8 @@ export class AuthService {
     };
   }
 
-  async signup(payload: CreateUserInput) {
-    // CHECK IF THE USER ALREADY EXISTS
-    const user = await this.userService.findOneByEmail(payload.email);
+  async signup(createUserInput: CreateUserInput) {
+    const user = await this.userService.findOneByEmail(createUserInput.email);
 
     if (user) {
       throw new Error('User already exists, login instead');
@@ -57,10 +53,10 @@ export class AuthService {
 
     // GENERATE HASH PASSWORD TO SAVE
     const hash = await bcrypt.hash(
-      payload.password,
+      createUserInput.password,
       Number(this.configService.get<string>('SALT_ROUND') || '8'),
     );
 
-    return this.userService.createUser({ ...payload, password: hash });
+    return this.userService.createUser({ ...createUserInput, password: hash });
   }
 }

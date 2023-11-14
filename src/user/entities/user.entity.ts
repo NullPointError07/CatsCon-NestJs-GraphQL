@@ -5,20 +5,12 @@ import { Document, Schema as MongooseSchema } from 'mongoose';
 @ObjectType()
 @Schema()
 export class User {
-  @Field(() => String, { nullable: true })
+  @Field(() => String)
   _id: MongooseSchema.Types.ObjectId;
 
   @Field(() => String)
   @Prop()
-  firstName: string;
-
-  @Field(() => String)
-  @Prop()
-  lastName: string;
-
-  @Field(() => Int)
-  @Prop()
-  age: number;
+  userName: string;
 
   @Field(() => String)
   @Prop({ unique: true })
@@ -28,9 +20,13 @@ export class User {
   @Prop()
   password: string;
 
-  @Field(() => String)
+  // @Field(() => String)
+  // @Prop()
+  // confirmPassword: string;
+
+  @Field(() => Int)
   @Prop()
-  confirmPassword: string;
+  age: number;
 
   @Field(() => String)
   @Prop()

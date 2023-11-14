@@ -4,7 +4,7 @@ import { Schema as MongooseSchema } from 'mongoose';
 
 @InputType()
 export class UpdateUserInput extends PartialType(
-  OmitType(CreateUserInput, ['password', 'confirmPassword', 'email']),
+  OmitType(CreateUserInput, ['password', 'email']),
 ) {
   @Field(() => String)
   _id: MongooseSchema.Types.ObjectId;
