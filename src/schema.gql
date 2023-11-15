@@ -2,6 +2,14 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type Cat {
+  _id: String!
+  creator: User!
+  name: String!
+  breed: String!
+  image: String!
+}
+
 type User {
   _id: String!
   userName: String!
@@ -11,15 +19,7 @@ type User {
   address: String!
   bio: String!
   profilePicture: String!
-  cats: String!
-}
-
-type Cat {
-  _id: String!
-  creator: User!
-  name: String!
-  breed: String!
-  image: String!
+  cats: [Cat!]!
 }
 
 type LoginUserResponse {
@@ -57,7 +57,7 @@ input UpdateUserInput {
 scalar Upload
 
 input CreateCatInput {
-  creator: String
+  creator: String!
   name: String!
   breed: String!
   image: Upload!

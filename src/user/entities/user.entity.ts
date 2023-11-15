@@ -41,7 +41,7 @@ export class User {
   @Prop()
   profilePicture?: string;
 
-  @Field(() => String)
+  @Field(() => [Cat])
   @Prop({ type: [{ type: MongooseSchema.Types.ObjectId, ref: 'Cat' }] })
   cats: Cat[];
 }

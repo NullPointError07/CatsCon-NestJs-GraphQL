@@ -11,6 +11,7 @@ import { UserModule } from './user/user.module';
 import { CatModule } from './cat/cat.module';
 // import { ServeStaticModule } from '@nestjs/serve-static';
 import { AuthModule } from './auth/auth.module';
+
 @Module({
   imports: [
     // ServeStaticModule.forRoot({
