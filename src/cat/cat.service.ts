@@ -17,7 +17,7 @@ export class CatService {
   ) {}
 
   // @CurrentUser() user: any
-  async createCat(createCatInput: CreateCatInput, userId: string) {
+  async createCat(createCatInput: CreateCatInput, userId: any) {
     const { image } = createCatInput;
     const { filename, createReadStream } = await image;
     const ReadStream = createReadStream();

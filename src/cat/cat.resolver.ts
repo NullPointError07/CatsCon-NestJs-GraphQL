@@ -18,6 +18,8 @@ export class CatResolver {
     @Args('createCatInput') createCatInput: CreateCatInput,
     @Context() { user },
   ): Promise<Cat> {
+    console.log('what is user', user);
+
     return this.catService.createCat(createCatInput, user.sub);
   }
 
