@@ -27,21 +27,40 @@ export class AuthService {
     return null;
   }
 
-  login(user: User) {
-    return {
-      user,
-      authToken: this.jwtService.sign(
-        {
-          email: user.email,
-          name: user.userName,
-          sub: user._id,
-        },
-        {
-          secret:
-            this.configService.get<string>('JWT_SECRET') || 'testingEnvSecret',
-        },
-      ),
-    };
+  // login(user: User) {
+  //   return {
+  //     user,
+  //     authToken: this.jwtService.sign(
+  //       {
+  //         email: user.email,
+  //         name: user.userName,
+  //         sub: user._id,
+  //       },
+  //       {
+  //         secret:
+  //           this.configService.get<string>('JWT_SECRET') || 'testingEnvSecret',
+  //       },
+  //     ),
+  //   };
+  // }
+
+  async login(user: User) {
+    const authToken = this.jwtService.sign(
+      {
+        email: user.email,
+        name: user.userName,
+        sub: user._id,
+      },
+      {
+        secret:
+          this.configService.get<string>('JWT_SECRET') || 'testingEnvSecret',
+      },
+    );
+    console.log('user', user);
+    const decodedToken = this.jwtService.decode(authToken);
+    console.log('Decoded Token:', decodedToken);
+
+    return { user, authToken };
   }
 
   async signup(createUserInput: CreateUserInput) {

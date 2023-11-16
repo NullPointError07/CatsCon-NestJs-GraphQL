@@ -60,7 +60,7 @@ input CreateCatInput {
   creator: String!
   name: String!
   breed: String!
-  image: Upload!
+  image: Upload
 }
 
 input LoginUserInput {

@@ -14,6 +14,6 @@ export class CreateCatInput {
   @Field(() => String)
   breed?: string;
 
-  @Field(() => GraphQLUpload)
+  @Field(() => GraphQLUpload, { nullable: true })
   image?: Upload;
 }
