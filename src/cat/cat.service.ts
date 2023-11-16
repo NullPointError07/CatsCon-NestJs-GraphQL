@@ -17,9 +17,7 @@ export class CatService {
   ) {}
 
   // @CurrentUser() user: any
-  async createCat(createCatInput: CreateCatInput) {
-    // console.log('do i get any user', user);
-
+  async createCat(createCatInput: CreateCatInput, userId: string) {
     const { image } = createCatInput;
     const { filename, createReadStream } = await image;
     const ReadStream = createReadStream();
@@ -38,9 +36,7 @@ export class CatService {
     const imageURL = `${baseURL}/${newFilename}`;
 
     createCatInput.image = imageURL;
-
-    // cat Data
-    // const catData = { ...createCatInput, creator: user.id };
+    createCatInput.creator = userId;
 
     const createCat = new this.catModel(createCatInput);
     return createCat.save();

@@ -1,9 +1,11 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, Int, Context } from '@nestjs/graphql';
 import { CatService } from './cat.service';
 import { Cat } from './entities/cat.entity';
 import { CreateCatInput } from './dto/create-cat.input';
 // import { CurrentUser } from 'src/auth/dto/current-user';
 import { Schema as MongooseSchema } from 'mongoose';
+import { UseGuards } from '@nestjs/common';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guards';
 // import { UpdateCatInput } from './dto/update-cat.input';
 
 @Resolver(() => Cat)
@@ -11,11 +13,12 @@ export class CatResolver {
   constructor(private readonly catService: CatService) {}
 
   @Mutation(() => Cat)
+  @UseGuards(JwtAuthGuard)
   createCat(
     @Args('createCatInput') createCatInput: CreateCatInput,
-    // @CurrentUser() user: any,
+    @Context() { user },
   ): Promise<Cat> {
-    return this.catService.createCat(createCatInput);
+    return this.catService.createCat(createCatInput, user.sub);
   }
 
   @Query(() => [Cat], { name: 'cat' })
