@@ -22,7 +22,7 @@ export class Cat {
   breed: string;
 
   @Field(() => String)
-  @Prop()
+  @Prop({ required: false })
   image?: string;
 }
 

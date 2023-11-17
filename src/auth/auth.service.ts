@@ -44,23 +44,23 @@ export class AuthService {
   //   };
   // }
 
-  async login(user: User) {
+  async login(userInfo: User) {
     const authToken = this.jwtService.sign(
       {
-        email: user.email,
-        name: user.userName,
-        sub: user._id,
+        email: userInfo.email,
+        name: userInfo.userName,
+        sub: userInfo._id,
       },
       {
         secret:
           this.configService.get<string>('JWT_SECRET') || 'testingEnvSecret',
       },
     );
-    console.log('user', user);
+    console.log('user', userInfo);
     const decodedToken = this.jwtService.decode(authToken);
     console.log('Decoded Token:', decodedToken);
 
-    return { user, authToken };
+    return { userInfo, authToken };
   }
 
   async signup(createUserInput: CreateUserInput) {

@@ -5,7 +5,6 @@ import { createWriteStream, existsSync, mkdirSync } from 'fs';
 import { InjectModel } from '@nestjs/mongoose';
 import { Cat, CatDocument } from './entities/cat.entity';
 import { Model, Schema as MongooseSchema } from 'mongoose';
-// import { CurrentUser } from 'src/auth/dto/current-user';
 
 // import { UpdateCatInput } from './dto/update-cat.input';
 
@@ -16,7 +15,6 @@ export class CatService {
     private catModel: Model<CatDocument>,
   ) {}
 
-  // @CurrentUser() user: any
   async createCat(createCatInput: CreateCatInput, userId: any) {
     const { image } = createCatInput;
     const { filename, createReadStream } = await image;

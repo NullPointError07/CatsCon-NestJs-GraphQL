@@ -57,7 +57,7 @@ input UpdateUserInput {
 scalar Upload
 
 input CreateCatInput {
-  creator: String!
+  creator: String
   name: String!
   breed: String!
   image: Upload
