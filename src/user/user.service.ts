@@ -38,6 +38,18 @@ export class UserService {
     return this.userModel.findById(id);
   }
 
+  async getUserCats() {
+    return await this.userModel.aggregate([
+      {
+        $lookup: {
+          from: 'cats',
+          localField: '_id',
+          foreignField: 'creator',
+          as: 'result',
+        },
+      },
+    ]);
+  }
   async findOneByEmail(email: string) {
     return await this.userModel.findOne({ email });
   }
