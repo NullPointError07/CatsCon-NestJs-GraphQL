@@ -50,6 +50,7 @@ export class UserService {
       },
     ]);
   }
+
   async findOneByEmail(email: string) {
     return await this.userModel.findOne({ email });
   }

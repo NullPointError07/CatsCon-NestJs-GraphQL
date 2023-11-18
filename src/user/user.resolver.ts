@@ -4,6 +4,7 @@ import { User } from './entities/user.entity';
 // import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
 import { Schema as MongooseSchema } from 'mongoose';
+import { extname } from 'path';
 
 @Resolver(() => User)
 export class UserResolver {
@@ -29,6 +30,22 @@ export class UserResolver {
   // update user
   @Mutation(() => User, { name: 'updateUserFromUserDoc' })
   updateUser(@Args('updateUserInput') updateUserInput: UpdateUserInput) {
+    if (updateUserInput.profilePicture) {
+      const { createReadStream, filename } = updateUserInput.profilePicture;
+      const fileExt = extname(filename);
+
+      if (!['.jpg', '.jpeg', '.png'].includes(fileExt)) {
+        throw new Error(
+          'Invalid file format. Only JPEG, JPG, and PNG are allowed.',
+        );
+      }
+
+      const maxSize = 3 * 1024 * 1024; // 3MB
+      if (createReadStream().length > maxSize) {
+        throw new Error('File size exceeds the allowed limit of 3MB.');
+      }
+    }
+
     return this.userService.updateUser(updateUserInput._id, updateUserInput);
   }
 

@@ -21,7 +21,7 @@ export class CatService {
     const ReadStream = createReadStream();
 
     const newFilename = `${Date.now()}-${filename}`;
-    const dirPath = join(process.cwd(), '/uploads');
+    const dirPath = join(process.cwd(), '/uploads/catVideos');
 
     if (!existsSync(dirPath)) {
       mkdirSync(dirPath, { recursive: true });
