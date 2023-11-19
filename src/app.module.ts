@@ -9,17 +9,17 @@ import { MongooseModule, MongooseModuleOptions } from '@nestjs/mongoose';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { UserModule } from './user/user.module';
 import { CatModule } from './cat/cat.module';
-import { ServeStaticModule } from '@nestjs/serve-static';
 import { AuthModule } from './auth/auth.module';
+// import { ServeStaticModule } from '@nestjs/serve-static';
 
 @Module({
   imports: [
-    ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '..', 'uploads', 'catVideos'),
-    }),
-    ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '..', 'uploads', 'profilePicture'),
-    }),
+    // ServeStaticModule.forRoot({
+    //   rootPath: join(__dirname, '..', 'uploads', 'catVideos'),
+    // }),
+    // ServeStaticModule.forRoot({
+    //   rootPath: join(__dirname, '..', 'uploads', 'profilePicture'),
+    // }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),

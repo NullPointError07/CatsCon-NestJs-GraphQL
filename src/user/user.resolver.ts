@@ -5,6 +5,7 @@ import { User } from './entities/user.entity';
 import { UpdateUserInput } from './dto/update-user.input';
 import { Schema as MongooseSchema } from 'mongoose';
 import { extname } from 'path';
+// import { UsePipes, ValidationPipe } from '@nestjs/common';
 
 @Resolver(() => User)
 export class UserResolver {
@@ -29,14 +30,17 @@ export class UserResolver {
 
   // update user
   @Mutation(() => User, { name: 'updateUserFromUserDoc' })
+  // @UsePipes(new ValidationPipe({ transform: true, whitelist: true }))
   updateUser(@Args('updateUserInput') updateUserInput: UpdateUserInput) {
     if (updateUserInput.profilePicture) {
       const { createReadStream, filename } = updateUserInput.profilePicture;
       const fileExt = extname(filename);
 
+      console.log('flexExt...', fileExt);
+
       if (!['.jpg', '.jpeg', '.png'].includes(fileExt)) {
         throw new Error(
-          'Invalid file format. Only JPEG, JPG, and PNG are allowed.',
+          'Invalid file format. Only JPEG, JPG, and PNG are allowed..',
         );
       }
 

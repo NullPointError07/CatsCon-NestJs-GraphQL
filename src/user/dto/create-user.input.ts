@@ -7,8 +7,8 @@ import {
   ValidationArguments,
 } from 'class-validator';
 
-function IsImageFile(validationOptions?: ValidationOptions) {
-  return function (object: Object, propertyName: string) {
+export function IsImageFile(validationOptions?: ValidationOptions) {
+  return function (object: Record<string, any>, propertyName: string) {
     registerDecorator({
       name: 'isImageFile',
       target: object.constructor,
@@ -18,13 +18,13 @@ function IsImageFile(validationOptions?: ValidationOptions) {
         validate(value: any, args: ValidationArguments) {
           const file = args.object[propertyName];
 
-          if (!file) {
-            return true;
+          if (!file || !file.filename) {
+            return false; // Reject if file or filename is undefined or null
           }
 
           const allowedFormats = ['.jpg', '.jpeg', '.png'];
           const isValidFormat = allowedFormats.some((format) =>
-            file.filename.endsWith(format),
+            file.filename.toLowerCase().endsWith(format),
           );
 
           if (!isValidFormat) {
