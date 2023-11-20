@@ -7,7 +7,7 @@ type Cat {
   creator: User!
   name: String!
   breed: String!
-  image: String!
+  catVideo: String!
 }
 
 type User {
@@ -60,7 +60,7 @@ input CreateCatInput {
   creator: String
   name: String!
   breed: String!
-  image: Upload
+  catVideo: Upload
 }
 
 input LoginUserInput {

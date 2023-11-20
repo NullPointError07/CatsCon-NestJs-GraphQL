@@ -3,9 +3,10 @@ import { CatService } from './cat.service';
 import { Cat } from './entities/cat.entity';
 import { CreateCatInput } from './dto/create-cat.input';
 import { Schema as MongooseSchema } from 'mongoose';
-import { HttpCode, UseGuards } from '@nestjs/common';
+import { HttpCode, UseGuards, UsePipes } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guards';
 import { CurrentUser } from 'src/auth/dto/current-user';
+import { FileValidationPipe } from 'src/pipes/file-validation.pipe';
 // import { UpdateCatInput } from './dto/update-cat.input';
 
 @Resolver(() => Cat)
@@ -15,6 +16,7 @@ export class CatResolver {
   @Mutation(() => Cat)
   @UseGuards(JwtAuthGuard)
   @HttpCode(201)
+  @UsePipes(new FileValidationPipe(['mp4'], 10 * 1024 * 1024, 'catVideo'))
   createCat(
     @Args('createCatInput') createCatInput: CreateCatInput,
     @CurrentUser() user: any,

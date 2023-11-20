@@ -15,5 +15,5 @@ export class CreateCatInput {
   breed?: string;
 
   @Field(() => GraphQLUpload, { nullable: true })
-  image?: Upload;
+  catVideo?: Upload;
 }

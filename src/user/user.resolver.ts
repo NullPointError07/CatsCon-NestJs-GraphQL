@@ -1,11 +1,11 @@
+import { UsePipes } from '@nestjs/common';
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { UserService } from './user.service';
 import { User } from './entities/user.entity';
 // import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
 import { Schema as MongooseSchema } from 'mongoose';
-import { extname } from 'path';
-// import { UsePipes, ValidationPipe } from '@nestjs/common';
+import { FileValidationPipe } from 'src/pipes/file-validation.pipe';
 
 @Resolver(() => User)
 export class UserResolver {
@@ -30,26 +30,14 @@ export class UserResolver {
 
   // update user
   @Mutation(() => User, { name: 'updateUserFromUserDoc' })
-  // @UsePipes(new ValidationPipe({ transform: true, whitelist: true }))
+  @UsePipes(
+    new FileValidationPipe(
+      ['png', 'jpg', 'jpeg'],
+      2 * 1024 * 1024, // 2MB
+      'profilePicture',
+    ),
+  )
   updateUser(@Args('updateUserInput') updateUserInput: UpdateUserInput) {
-    if (updateUserInput.profilePicture) {
-      const { createReadStream, filename } = updateUserInput.profilePicture;
-      const fileExt = extname(filename);
-
-      console.log('flexExt...', fileExt);
-
-      if (!['.jpg', '.jpeg', '.png'].includes(fileExt)) {
-        throw new Error(
-          'Invalid file format. Only JPEG, JPG, and PNG are allowed..',
-        );
-      }
-
-      const maxSize = 3 * 1024 * 1024; // 3MB
-      if (createReadStream().length > maxSize) {
-        throw new Error('File size exceeds the allowed limit of 3MB.');
-      }
-    }
-
     return this.userService.updateUser(updateUserInput._id, updateUserInput);
   }
 

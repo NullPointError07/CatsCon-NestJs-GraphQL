@@ -16,8 +16,8 @@ export class CatService {
   ) {}
 
   async createCat(createCatInput: CreateCatInput, userId: any) {
-    const { image } = createCatInput;
-    const { filename, createReadStream } = await image;
+    const { catVideo } = createCatInput;
+    const { filename, createReadStream } = await catVideo;
     const ReadStream = createReadStream();
 
     const newFilename = `${Date.now()}-${filename}`;
@@ -33,7 +33,7 @@ export class CatService {
     const baseURL = process.env.BASE_URL;
     const imageURL = `${baseURL}/${newFilename}`;
 
-    createCatInput.image = imageURL;
+    createCatInput.catVideo = imageURL;
     createCatInput.creator = userId;
 
     const createCat = new this.catModel(createCatInput);

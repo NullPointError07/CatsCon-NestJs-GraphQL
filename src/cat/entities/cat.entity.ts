@@ -22,8 +22,8 @@ export class Cat {
   breed: string;
 
   @Field(() => String)
-  @Prop({ required: false })
-  image?: string;
+  @Prop()
+  catVideo?: string;
 }
 
 export type CatDocument = Cat & Document;
