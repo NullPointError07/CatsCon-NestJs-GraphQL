@@ -27,23 +27,6 @@ export class AuthService {
     return null;
   }
 
-  // login(user: User) {
-  //   return {
-  //     user,
-  //     authToken: this.jwtService.sign(
-  //       {
-  //         email: user.email,
-  //         name: user.userName,
-  //         sub: user._id,
-  //       },
-  //       {
-  //         secret:
-  //           this.configService.get<string>('JWT_SECRET') || 'testingEnvSecret',
-  //       },
-  //     ),
-  //   };
-  // }
-
   async login(userInfo: User) {
     const authToken = this.jwtService.sign(
       {

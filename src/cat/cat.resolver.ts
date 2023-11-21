@@ -21,8 +21,6 @@ export class CatResolver {
     @Args('createCatInput') createCatInput: CreateCatInput,
     @CurrentUser() user: any,
   ): Promise<Cat> {
-    console.log('what is user', user);
-
     return this.catService.createCat(createCatInput, user._id);
   }
 
