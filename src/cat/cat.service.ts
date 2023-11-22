@@ -16,6 +16,7 @@ export class CatService {
 
   async createCat(createCatInput: CreateCatInput, userId: any) {
     const { catVideo } = createCatInput;
+
     const { filename, createReadStream } = await catVideo;
     const ReadStream = createReadStream();
 
@@ -39,8 +40,8 @@ export class CatService {
     return createCat.save();
   }
 
-  findAll() {
-    return `This action returns all cat`;
+  findAllCat() {
+    return this.catModel.find().exec();
   }
 
   findCatById(id: MongooseSchema.Types.ObjectId) {
@@ -73,7 +74,8 @@ export class CatService {
           status: 404,
         });
       }
-      return await this.catModel.findByIdAndDelete(id).exec();
+      await this.catModel.findByIdAndDelete(id).exec();
+      return 'Sucessfully deleted Cat';
     } catch (error) {
       throw new NotFoundException(error.message);
     }

@@ -13,9 +13,6 @@ export class CreateUserInput {
   @Field(() => String)
   password: string;
 
-  // @Field(() => String)
-  // confirmPassword: string;
-
   @Field(() => Int, { nullable: true })
   age: number;
 

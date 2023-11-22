@@ -5,8 +5,9 @@
 type Cat {
   _id: String!
   creator: User!
-  name: String!
-  breed: String!
+  title: String!
+  description: String!
+  tags: [String!]!
   catVideo: String!
 }
 
@@ -40,7 +41,7 @@ type Mutation {
   deleteFieldFromUserDoc(userId: String!, fieldToDelete: String!): String!
   createCat(createCatInput: CreateCatInput!): Cat!
   updateCatFromCatDoc(updateCatInput: UpdateCatInput!): Cat!
-  deleteCatFromCatDoc(userId: String!): Cat!
+  deleteCatFromCatDoc(userId: String!): String!
   login(loginUserInput: LoginUserInput!): LoginUserResponse!
   signup(signupInput: CreateUserInput!): User!
 }
@@ -58,7 +59,6 @@ input UpdateUserInput {
 scalar Upload
 
 input CreateCatInput {
-  creator: String
   title: String!
   description: String!
   tags: [String!]!

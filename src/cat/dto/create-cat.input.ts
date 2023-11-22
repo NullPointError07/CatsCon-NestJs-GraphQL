@@ -5,7 +5,6 @@ import { Schema as MongooseSchema } from 'mongoose';
 
 @InputType()
 export class CreateCatInput {
-  @Field(() => String, { nullable: true })
   creator: MongooseSchema.Types.ObjectId;
 
   @Field(() => String)
@@ -13,7 +12,7 @@ export class CreateCatInput {
 
   @Field(() => String)
   description?: string;
-  
+
   @Field(() => [String])
   tags?: string[];
 

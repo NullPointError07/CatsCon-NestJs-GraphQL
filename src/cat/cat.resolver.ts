@@ -25,7 +25,7 @@ export class CatResolver {
 
   @Query(() => [Cat], { name: 'catsAll' })
   findAll() {
-    return this.catService.findAll();
+    return this.catService.findAllCat();
   }
 
   @Query(() => Cat, { name: 'findCatById' })
@@ -41,10 +41,10 @@ export class CatResolver {
     return this.catService.updateCat(updateCatInput._id, updateCatInput);
   }
 
-  @Mutation(() => Cat, { name: 'deleteCatFromCatDoc' })
+  @Mutation(() => String, { name: 'deleteCatFromCatDoc' })
   async deleteCat(
     @Args('userId', { type: () => String }) id: MongooseSchema.Types.ObjectId,
-  ): Promise<Cat> {
+  ) {
     return await this.catService.deleteCat(id);
   }
 }

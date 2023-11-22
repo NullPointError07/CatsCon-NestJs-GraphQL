@@ -15,11 +15,15 @@ export class Cat {
 
   @Field(() => String)
   @Prop()
-  name: string;
+  title: string;
 
   @Field(() => String)
   @Prop()
-  breed: string;
+  description: string;
+
+  @Field(() => [String])
+  @Prop([String])
+  tags: string[];
 
   @Field(() => String)
   @Prop()
