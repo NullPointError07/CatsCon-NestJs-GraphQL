@@ -9,10 +9,13 @@ export class CreateCatInput {
   creator: MongooseSchema.Types.ObjectId;
 
   @Field(() => String)
-  name?: string;
+  title?: string;
 
   @Field(() => String)
-  breed?: string;
+  description?: string;
+  
+  @Field(() => [String])
+  tags?: string[];
 
   @Field(() => GraphQLUpload, { nullable: true })
   catVideo?: Upload;

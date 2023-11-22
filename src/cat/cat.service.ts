@@ -1,12 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateCatInput } from './dto/create-cat.input';
 import { join } from 'path';
 import { createWriteStream, existsSync, mkdirSync } from 'fs';
 import { InjectModel } from '@nestjs/mongoose';
 import { Cat, CatDocument } from './entities/cat.entity';
 import { Model, Schema as MongooseSchema } from 'mongoose';
-
-// import { UpdateCatInput } from './dto/update-cat.input';
+import { UpdateCatInput } from './dto/update-cat.input';
 
 @Injectable()
 export class CatService {
@@ -48,11 +47,35 @@ export class CatService {
     return this.catModel.findById(id);
   }
 
-  // update(id: number, updateCatInput: UpdateCatInput) {
-  //   return `This action updates a #${id} cat`;
-  // }
+  async updateCat(
+    id: MongooseSchema.Types.ObjectId,
+    updateCatInput: UpdateCatInput,
+  ) {
+    try {
+      const cat = await this.catModel.findById(id).exec();
+      if (!cat) throw new NotFoundException('Cat Not Found');
 
-  remove(id: number) {
-    return `This action removes a #${id} cat`;
+      return this.catModel.findByIdAndUpdate(id, updateCatInput, {
+        new: true,
+      });
+    } catch (error) {
+      throw new NotFoundException(error.message);
+    }
+  }
+
+  async deleteCat(id: MongooseSchema.Types.ObjectId) {
+    try {
+      const cat = await this.catModel.findById(id).exec();
+
+      if (!cat) {
+        throw new NotFoundException({
+          message: 'Cat Not Found By cat Id',
+          status: 404,
+        });
+      }
+      return await this.catModel.findByIdAndDelete(id).exec();
+    } catch (error) {
+      throw new NotFoundException(error.message);
+    }
   }
 }

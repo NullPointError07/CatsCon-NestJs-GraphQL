@@ -1,13 +1,13 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { CatService } from './cat.service';
 import { Cat } from './entities/cat.entity';
 import { CreateCatInput } from './dto/create-cat.input';
 import { Schema as MongooseSchema } from 'mongoose';
-import { HttpCode, UseGuards, UsePipes } from '@nestjs/common';
+import { UseGuards, UsePipes } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guards';
 import { CurrentUser } from 'src/auth/dto/current-user';
 import { FileValidationPipe } from 'src/pipes/file-validation.pipe';
-// import { UpdateCatInput } from './dto/update-cat.input';
+import { UpdateCatInput } from './dto/update-cat.input';
 
 @Resolver(() => Cat)
 export class CatResolver {
@@ -15,7 +15,6 @@ export class CatResolver {
 
   @Mutation(() => Cat)
   @UseGuards(JwtAuthGuard)
-  @HttpCode(201)
   @UsePipes(new FileValidationPipe(['mp4'], 10 * 1024 * 1024, 'catVideo'))
   createCat(
     @Args('createCatInput') createCatInput: CreateCatInput,
@@ -24,7 +23,7 @@ export class CatResolver {
     return this.catService.createCat(createCatInput, user._id);
   }
 
-  @Query(() => [Cat], { name: 'cat' })
+  @Query(() => [Cat], { name: 'catsAll' })
   findAll() {
     return this.catService.findAll();
   }
@@ -37,13 +36,15 @@ export class CatResolver {
     return this.catService.findCatById(id);
   }
 
-  // @Mutation(() => Cat)
-  // updateCat(@Args('updateCatInput') updateCatInput: UpdateCatInput) {
-  //   return this.catService.update(updateCatInput.id, updateCatInput);
-  // }
+  @Mutation(() => Cat, { name: 'updateCatFromCatDoc' })
+  updateCat(@Args('updateCatInput') updateCatInput: UpdateCatInput) {
+    return this.catService.updateCat(updateCatInput._id, updateCatInput);
+  }
 
-  @Mutation(() => Cat)
-  removeCat(@Args('id', { type: () => Int }) id: number) {
-    return this.catService.remove(id);
+  @Mutation(() => Cat, { name: 'deleteCatFromCatDoc' })
+  async deleteCat(
+    @Args('userId', { type: () => String }) id: MongooseSchema.Types.ObjectId,
+  ): Promise<Cat> {
+    return await this.catService.deleteCat(id);
   }
 }

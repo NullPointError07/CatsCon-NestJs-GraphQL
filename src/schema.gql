@@ -30,7 +30,7 @@ type LoginUserResponse {
 type Query {
   usersAll: [User!]!
   userById(userId: String!): User!
-  cat: [Cat!]!
+  catsAll: [Cat!]!
   findCatById(catId: String!): Cat!
 }
 
@@ -39,7 +39,8 @@ type Mutation {
   deleteUserFromUserDoc(userId: String!): User!
   deleteFieldFromUserDoc(userId: String!, fieldToDelete: String!): String!
   createCat(createCatInput: CreateCatInput!): Cat!
-  removeCat(id: Int!): Cat!
+  updateCatFromCatDoc(updateCatInput: UpdateCatInput!): Cat!
+  deleteCatFromCatDoc(userId: String!): Cat!
   login(loginUserInput: LoginUserInput!): LoginUserResponse!
   signup(signupInput: CreateUserInput!): User!
 }
@@ -58,9 +59,17 @@ scalar Upload
 
 input CreateCatInput {
   creator: String
-  name: String!
-  breed: String!
+  title: String!
+  description: String!
+  tags: [String!]!
   catVideo: Upload
+}
+
+input UpdateCatInput {
+  _id: String!
+  title: String
+  description: String
+  tags: [String!]
 }
 
 input LoginUserInput {

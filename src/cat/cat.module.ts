@@ -11,24 +11,24 @@ import { GqlThrottlerGuard } from 'src/Middlewares/graphql-throttling.middleware
 @Module({
   imports: [
     MongooseModule.forFeature([{ name: Cat.name, schema: CatSchema }]),
-    ThrottlerModule.forRootAsync({
-      imports: [ConfigModule],
-      inject: [ConfigService],
-      useFactory: (configService: ConfigService): ThrottlerModuleOptions => [
-        {
-          ttl: configService.getOrThrow<number>('UPLOAD_RATE_TTL'),
-          limit: configService.getOrThrow<number>('UPLOAD_RATE_LIMIT'),
-        },
-      ],
-    }),
+    // ThrottlerModule.forRootAsync({
+    //   imports: [ConfigModule],
+    //   inject: [ConfigService],
+    //   useFactory: (configService: ConfigService): ThrottlerModuleOptions => [
+    //     {
+    //       ttl: configService.getOrThrow<number>('UPLOAD_RATE_TTL'),
+    //       limit: configService.getOrThrow<number>('UPLOAD_RATE_LIMIT'),
+    //     },
+    //   ],
+    // }),
   ],
   providers: [
     CatResolver,
     CatService,
-    {
-      provide: APP_GUARD,
-      useClass: GqlThrottlerGuard,
-    },
+    // {
+    //   provide: APP_GUARD,
+    //   useClass: GqlThrottlerGuard,
+    // },
   ],
 })
 export class CatModule {}

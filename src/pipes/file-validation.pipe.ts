@@ -12,7 +12,7 @@ export class FileValidationPipe implements PipeTransform {
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async transform(value: any, metadata: ArgumentMetadata) {
-    const resolvedValue = await value;
+    const resolvedValue = await Promise.resolve(value);
     const resolvedData = await resolvedValue?.[this.fileType];
 
     console.log('resolved data', resolvedData);
