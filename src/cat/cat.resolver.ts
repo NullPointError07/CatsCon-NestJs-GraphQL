@@ -14,7 +14,7 @@ export class CatResolver {
   constructor(private readonly catService: CatService) {}
 
   @Mutation(() => Cat)
-  @UseGuards(JwtAuthGuard)
+   @UseGuards(JwtAuthGuard)
   @UsePipes(new FileValidationPipe(['mp4'], 10 * 1024 * 1024, 'catVideo'))
   createCat(
     @Args('createCatInput') createCatInput: CreateCatInput,

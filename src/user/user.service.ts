@@ -55,6 +55,10 @@ export class UserService {
     return await this.userModel.findOne({ email });
   }
 
+  async findDistinct(email: string) {
+    return await this.userModel.distinct( email );
+  }
+
   async updateUser(
     id: MongooseSchema.Types.ObjectId,
     updateUserInput: UpdateUserInput,

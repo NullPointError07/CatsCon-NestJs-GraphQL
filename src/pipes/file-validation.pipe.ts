@@ -15,8 +15,6 @@ export class FileValidationPipe implements PipeTransform {
     const resolvedValue = await Promise.resolve(value);
     const resolvedData = await resolvedValue?.[this.fileType];
 
-    console.log('resolved data', resolvedData);
-
     if (resolvedData) {
       const { filename, createReadStream } = resolvedData;
 
