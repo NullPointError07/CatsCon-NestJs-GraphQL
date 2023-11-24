@@ -8,13 +8,14 @@ import { JwtAuthGuard } from 'src/auth/jwt-auth.guards';
 import { CurrentUser } from 'src/auth/dto/current-user';
 import { FileValidationPipe } from 'src/pipes/file-validation.pipe';
 import { UpdateCatInput } from './dto/update-cat.input';
+import { GqlThrottlerGuard } from 'src/Middlewares/graphql-throttling.middleware';
 
 @Resolver(() => Cat)
 export class CatResolver {
   constructor(private readonly catService: CatService) {}
 
   @Mutation(() => Cat)
-   @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, GqlThrottlerGuard)
   @UsePipes(new FileValidationPipe(['mp4'], 10 * 1024 * 1024, 'catVideo'))
   createCat(
     @Args('createCatInput') createCatInput: CreateCatInput,
