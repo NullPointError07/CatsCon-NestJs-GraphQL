@@ -15,7 +15,6 @@ type User {
   _id: String!
   userName: String!
   email: String!
-  password: String!
   age: Int!
   address: String!
   bio: String!
@@ -37,6 +36,7 @@ type Query {
 
 type Mutation {
   updateUserFromUserDoc(updateUserInput: UpdateUserInput!): User!
+  updateUserProfilePicture(updateProfilePicture: UpdateProfilePictureInput!): User!
   deleteUserFromUserDoc(userId: String!): User!
   deleteFieldFromUserDoc(userId: String!, fieldToDelete: String!): String!
   createCat(createCatInput: CreateCatInput!): Cat!
@@ -47,12 +47,18 @@ type Mutation {
 }
 
 input UpdateUserInput {
+  _id: String!
   userName: String
+  email: String
+  password: String
   age: Int
   address: String
   bio: String
-  profilePicture: Upload
+}
+
+input UpdateProfilePictureInput {
   _id: String!
+  profilePicture: Upload
 }
 
 """The `Upload` scalar type represents a file upload."""
@@ -81,8 +87,4 @@ input CreateUserInput {
   userName: String!
   email: String!
   password: String!
-  age: Int
-  address: String
-  bio: String
-  profilePicture: Upload
 }

@@ -10,6 +10,7 @@ import { User, UserDocument } from './entities/user.entity';
 import { Model, Schema as MongooseSchema } from 'mongoose';
 import { join } from 'path';
 import { createWriteStream, existsSync, mkdirSync } from 'fs';
+import { UpdateProfilePictureInput } from './dto/update-user.profilePic.input';
 
 @Injectable()
 export class UserService {
@@ -55,10 +56,6 @@ export class UserService {
     return await this.userModel.findOne({ email });
   }
 
-  async findDistinct(email: string) {
-    return await this.userModel.distinct( email );
-  }
-
   async updateUser(
     id: MongooseSchema.Types.ObjectId,
     updateUserInput: UpdateUserInput,
@@ -67,7 +64,23 @@ export class UserService {
       const user = await this.userModel.findById(id).exec();
       if (!user) throw new NotFoundException('User Not Found');
 
-      const { profilePicture } = updateUserInput;
+      return this.userModel.findByIdAndUpdate(id, updateUserInput, {
+        new: true,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async updateProfilePicture(
+    id: MongooseSchema.Types.ObjectId,
+    updateProfilePicture: UpdateProfilePictureInput,
+  ) {
+    try {
+      const user = await this.userModel.findById(id).exec();
+      if (!user) throw new NotFoundException('User Not Found');
+
+      const { profilePicture } = updateProfilePicture;
       const { filename, createReadStream } = await profilePicture;
       const ReadStream = createReadStream();
       const newFilename = `${Date.now()}-${filename}`;
@@ -83,9 +96,9 @@ export class UserService {
       const baseURL = process.env.BASE_URL;
       const imageURL = `${baseURL}/${newFilename}`;
 
-      updateUserInput.profilePicture = imageURL;
+      updateProfilePicture.profilePicture = imageURL;
 
-      return this.userModel.findByIdAndUpdate(id, updateUserInput, {
+      return this.userModel.findByIdAndUpdate(id, updateProfilePicture, {
         new: true,
       });
     } catch (error) {

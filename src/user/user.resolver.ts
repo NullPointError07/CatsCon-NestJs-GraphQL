@@ -4,6 +4,7 @@ import { UserService } from './user.service';
 import { User } from './entities/user.entity';
 // import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
+import { UpdateProfilePictureInput } from './dto/update-user.profilePic.input';
 import { Schema as MongooseSchema } from 'mongoose';
 import { FileValidationPipe } from 'src/pipes/file-validation.pipe';
 
@@ -30,6 +31,11 @@ export class UserResolver {
 
   // update user
   @Mutation(() => User, { name: 'updateUserFromUserDoc' })
+  updateUser(@Args('updateUserInput') updateUserInput: UpdateUserInput) {
+    return this.userService.updateUser(updateUserInput._id, updateUserInput);
+  }
+
+  @Mutation(() => User, { name: 'updateUserProfilePicture' })
   @UsePipes(
     new FileValidationPipe(
       ['png', 'jpg', 'jpeg'],
@@ -37,8 +43,14 @@ export class UserResolver {
       'profilePicture',
     ),
   )
-  updateUser(@Args('updateUserInput') updateUserInput: UpdateUserInput) {
-    return this.userService.updateUser(updateUserInput._id, updateUserInput);
+  updateUserProfilePicture(
+    @Args('updateProfilePicture')
+    updateProfilePicture: UpdateProfilePictureInput,
+  ) {
+    return this.userService.updateProfilePicture(
+      updateProfilePicture._id,
+      updateProfilePicture,
+    );
   }
 
   // delete user

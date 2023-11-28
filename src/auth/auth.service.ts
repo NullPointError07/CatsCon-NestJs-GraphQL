@@ -39,9 +39,6 @@ export class AuthService {
           this.configService.get<string>('JWT_SECRET') || 'testingEnvSecret',
       },
     );
-    console.log('user', userInfo);
-    const decodedToken = this.jwtService.decode(authToken);
-    console.log('Decoded Token:', decodedToken);
 
     return { userInfo, authToken };
   }
