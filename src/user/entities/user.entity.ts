@@ -17,6 +17,7 @@ export class User {
   @Prop({ unique: true })
   email: string;
 
+  @Field(() => String)
   @Prop()
   password: string;
 

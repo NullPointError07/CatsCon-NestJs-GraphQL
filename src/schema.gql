@@ -15,6 +15,7 @@ type User {
   _id: String!
   userName: String!
   email: String!
+  password: String!
   age: Int!
   address: String!
   bio: String!
