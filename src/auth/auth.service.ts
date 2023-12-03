@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { LoginUserInput } from './dto/login-user.input';
-import { UserService } from 'src/user/user.service';
-import * as bcrypt from 'bcrypt';
-import { User } from 'src/user/entities/user.entity';
-import { CreateUserInput } from 'src/user/dto/create-user.input';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
+import * as bcrypt from 'bcrypt';
+import { LoginUserInput } from './dto/login-user.input';
+import { UserService } from 'src/user/user.service';
+import { User } from 'src/user/entities/user.entity';
+import { CreateUserInput } from 'src/user/dto/create-user.input';
 
 @Injectable()
 export class AuthService {
@@ -22,7 +22,9 @@ export class AuthService {
     const hasMatched = await bcrypt.compare(password, user?.password);
 
     if (user && hasMatched) {
-      return user;
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { password, ...result } = user;
+      return result;
     }
     return null;
   }
