@@ -31,6 +31,7 @@ type LoginUserResponse {
 type Query {
   usersAll: [User!]!
   userById(userId: String!): User!
+  userByEmail(userEmail: String!): User!
   catsAll: [Cat!]!
   findCatById(catId: String!): Cat!
 }

@@ -29,6 +29,13 @@ export class UserResolver {
     return this.userService.findUserById(id);
   }
 
+  @Query(() => User, { name: 'userByEmail' })
+  findUserByEmail(
+    @Args('userEmail', { type: () => String }) email: string,
+  ) {
+    return this.userService.findUserByEmail(email);
+  }
+  
   // update user
   @Mutation(() => User, { name: 'updateUserFromUserDoc' })
   updateUser(@Args('updateUserInput') updateUserInput: UpdateUserInput) {

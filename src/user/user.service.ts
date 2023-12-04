@@ -39,6 +39,10 @@ export class UserService {
     return this.userModel.findById(id);
   }
 
+  findUserByEmail(email: string) {
+    return this.userModel.findOne({ email });
+  }
+
   async getUserCats() {
     return await this.userModel.aggregate([
       {
