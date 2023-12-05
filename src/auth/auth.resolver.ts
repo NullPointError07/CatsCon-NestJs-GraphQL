@@ -17,7 +17,7 @@ export class AuthResolver {
     @Args('loginUserInput') loginUserInput: LoginUserInput,
     @Context() context: any,
   ) {
-    return this.authService.login(context.user);
+    return this.authService.login(context.user._doc);
   }
 
   @Mutation(() => User)

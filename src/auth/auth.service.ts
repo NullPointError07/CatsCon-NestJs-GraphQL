@@ -29,12 +29,12 @@ export class AuthService {
     return null;
   }
 
-  async login(userInfo: User) {
-    const authToken = this.jwtService.sign(
+  async login(user: User) {
+    const accessToken = this.jwtService.sign(
       {
-        email: userInfo.email,
-        name: userInfo.userName,
-        sub: userInfo._id,
+        email: user.email,
+        name: user.userName,
+        sub: user._id,
       },
       {
         secret:
@@ -42,7 +42,19 @@ export class AuthService {
       },
     );
 
-    return { userInfo, authToken };
+    // const refreshToken = this.jwtService.sign(
+    //   {
+    //     email: user.email,
+    //     name: user.userName,
+    //     sub: user._id,
+    //   },
+    //   {
+    //     secret:
+    //       this.configService.get<string>('JWT_SECRET') || 'testingEnvSecret',
+    //   },
+    // );
+
+    return { user, accessToken };
   }
 
   async signup(createUserInput: CreateUserInput) {

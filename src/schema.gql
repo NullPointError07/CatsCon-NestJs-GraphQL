@@ -25,7 +25,7 @@ type User {
 
 type LoginUserResponse {
   user: User!
-  authToken: String!
+  accessToken: String!
 }
 
 type Query {
