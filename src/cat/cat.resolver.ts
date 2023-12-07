@@ -38,7 +38,7 @@ export class CatResolver {
   ) {
     return this.catService.findCatById(id);
   }
-
+  
   @Mutation(() => Cat, { name: 'updateCatFromCatDoc' })
   updateCat(@Args('updateCatInput') updateCatInput: UpdateCatInput) {
     return this.catService.updateCat(updateCatInput._id, updateCatInput);
