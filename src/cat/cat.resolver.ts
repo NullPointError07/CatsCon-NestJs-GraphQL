@@ -15,16 +15,15 @@ export class CatResolver {
   constructor(private readonly catService: CatService) {}
 
   @Mutation(() => Cat)
-  @UseGuards(GqlThrottlerGuard)
+  @UseGuards(JwtAuthGuard, GqlThrottlerGuard)
   @UsePipes(new FileValidationPipe(['mp4'], 10 * 1024 * 1024, 'catVideo'))
   createCat(
     @Args('createCatInput') createCatInput: CreateCatInput,
-    // @CurrentUser() user: any,
+    @CurrentUser() user: any,
   ): Promise<Cat> {
-    return this.catService.createCat(
-      createCatInput,
-      '6553a8321e24271318d20416',
-    );
+   
+
+    return this.catService.createCat(createCatInput, user._id);
   }
 
   @Query(() => [Cat], { name: 'catsAll' })

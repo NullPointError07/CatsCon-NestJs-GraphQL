@@ -40,8 +40,37 @@ export class CatService {
     return createCat.save();
   }
 
+  // findAllCat() {
+  //   return this.catModel.find().exec();
+  // }
   findAllCat() {
-    return this.catModel.find().exec();
+    return this.catModel
+      .aggregate([
+        {
+          $match: {},
+        },
+        {
+          $lookup: {
+            from: 'users',
+            localField: 'creator',
+            foreignField: '_id',
+            as: 'creator',
+          },
+        },
+        {
+          $project: {
+            _id: 1,
+            title: 1,
+            description: 1,
+            tags: 1,
+            catVideo: 1,
+            creator: {
+              $arrayElemAt: ['$creator', 0],
+            },
+          },
+        },
+      ])
+      .exec();
   }
 
   findCatById(id: MongooseSchema.Types.ObjectId) {
