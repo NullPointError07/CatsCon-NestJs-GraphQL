@@ -21,8 +21,6 @@ export class CatResolver {
     @Args('createCatInput') createCatInput: CreateCatInput,
     @CurrentUser() user: any,
   ): Promise<Cat> {
-   
-
     return this.catService.createCat(createCatInput, user._id);
   }
 
@@ -38,7 +36,7 @@ export class CatResolver {
   ) {
     return this.catService.findCatById(id);
   }
-  
+
   @Mutation(() => Cat, { name: 'updateCatFromCatDoc' })
   updateCat(@Args('updateCatInput') updateCatInput: UpdateCatInput) {
     return this.catService.updateCat(updateCatInput._id, updateCatInput);
@@ -46,7 +44,7 @@ export class CatResolver {
 
   @Mutation(() => String, { name: 'deleteCatFromCatDoc' })
   async deleteCat(
-    @Args('userId', { type: () => String }) id: MongooseSchema.Types.ObjectId,
+    @Args('catId', { type: () => String }) id: MongooseSchema.Types.ObjectId,
   ) {
     return await this.catService.deleteCat(id);
   }

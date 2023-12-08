@@ -35,8 +35,29 @@ export class UserService {
     return this.userModel.find().exec();
   }
 
-  findUserById(id: MongooseSchema.Types.ObjectId) {
-    return this.userModel.findById(id);
+  findUserById(id) {
+    return this.userModel.aggregate([
+      { $match: { _id: id } },
+      {
+        $lookup: {
+          from: 'cats',
+          localField: '_id',
+          foreignField: 'creator',
+          as: 'userVideos',
+        },
+      },
+      {
+        $project: {
+          _id: 1,
+          userName: 1,
+          email: 1,
+          age: 1,
+          address: 1,
+          bio: 1,
+          userVideos: 1,
+        },
+      },
+    ]);
   }
 
   findUserByEmail(email: string) {

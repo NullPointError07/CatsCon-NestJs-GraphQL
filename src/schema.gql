@@ -42,7 +42,7 @@ type Mutation {
   deleteFieldFromUserDoc(userId: String!, fieldToDelete: String!): String!
   createCat(createCatInput: CreateCatInput!): Cat!
   updateCatFromCatDoc(updateCatInput: UpdateCatInput!): Cat!
-  deleteCatFromCatDoc(userId: String!): String!
+  deleteCatFromCatDoc(catId: String!): String!
   login(loginUserInput: LoginUserInput!): LoginUserResponse!
   signup(signupInput: CreateUserInput!): User!
 }
