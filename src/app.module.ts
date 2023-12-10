@@ -15,10 +15,10 @@ import { AuthModule } from './auth/auth.module';
 @Module({
   imports: [
     // ServeStaticModule.forRoot({
-    //   rootPath: join(__dirname, '..', 'uploads', 'catVideos'),
+    //   rootPath: join(__dirname, '..', 'uploads/catVideos'),
     // }),
     // ServeStaticModule.forRoot({
-    //   rootPath: join(__dirname, '..', 'uploads', 'profilePicture'),
+    //   rootPath: join(__dirname, '..', 'uploads/profilePic'),
     // }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,

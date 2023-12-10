@@ -1,6 +1,7 @@
 import { ObjectType, Field, Int } from '@nestjs/graphql';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Schema as MongooseSchema } from 'mongoose';
+import { Cat } from 'src/cat/entities/cat.entity';
 
 @ObjectType()
 @Schema()
@@ -35,6 +36,10 @@ export class User {
   @Field(() => String)
   @Prop()
   profilePicture?: string;
+
+  @Field(() => [Cat])
+  @Prop({ type: [MongooseSchema.Types.ObjectId], ref: 'Cat' })
+  userVideos: Cat[];
 }
 
 export type UserDocument = User & Document;

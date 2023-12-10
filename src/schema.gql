@@ -2,6 +2,15 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type Cat {
+  _id: String!
+  creator: User!
+  title: String!
+  description: String!
+  tags: [String!]!
+  catVideo: String!
+}
+
 type User {
   _id: String!
   userName: String!
@@ -11,15 +20,7 @@ type User {
   address: String!
   bio: String!
   profilePicture: String!
-}
-
-type Cat {
-  _id: String!
-  creator: User!
-  title: String!
-  description: String!
-  tags: [String!]!
-  catVideo: String!
+  userVideos: [Cat!]!
 }
 
 type LoginUserResponse {
