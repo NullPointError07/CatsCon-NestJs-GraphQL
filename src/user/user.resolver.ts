@@ -23,19 +23,15 @@ export class UserResolver {
   }
 
   @Query(() => User, { name: 'userById' })
-  findUserById(
-    @Args('userId', { type: () => String }) id: MongooseSchema.Types.ObjectId,
-  ) {
+  findUserById(@Args('userId', { type: () => String }) id: string) {
     return this.userService.findUserById(id);
   }
 
   @Query(() => User, { name: 'userByEmail' })
-  findUserByEmail(
-    @Args('userEmail', { type: () => String }) email: string,
-  ) {
+  findUserByEmail(@Args('userEmail', { type: () => String }) email: string) {
     return this.userService.findUserByEmail(email);
   }
-  
+
   // update user
   @Mutation(() => User, { name: 'updateUserFromUserDoc' })
   updateUser(@Args('updateUserInput') updateUserInput: UpdateUserInput) {

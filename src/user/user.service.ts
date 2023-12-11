@@ -7,7 +7,7 @@ import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
 import { InjectModel } from '@nestjs/mongoose';
 import { User, UserDocument } from './entities/user.entity';
-import { Model, Schema as MongooseSchema } from 'mongoose';
+import mongoose, { Model, Schema as MongooseSchema } from 'mongoose';
 import { join } from 'path';
 import { createWriteStream, existsSync, mkdirSync } from 'fs';
 import { UpdateProfilePictureInput } from './dto/update-user.profilePic.input';
@@ -35,37 +35,31 @@ export class UserService {
     return this.userModel.find().exec();
   }
 
-  async findUserById(id: MongooseSchema.Types.ObjectId) {
-    // console.log('----------', id);
-    const userID = await this.userModel.findById(id);
-    // console.log('userID', userID);
-    const response = await this.userModel
-      .aggregate([
-        { $match: { _id: userID._id } },
-        {
-          $lookup: {
-            from: 'cats',
-            localField: '_id',
-            foreignField: 'creator',
-            as: 'userVideos',
-          },
+  async findUserById(id: string) {
+    const response = await this.userModel.aggregate([
+      { $match: { _id: new mongoose.Types.ObjectId(id) } },
+      {
+        $lookup: {
+          from: 'cats',
+          localField: '_id',
+          foreignField: 'creator',
+          as: 'userVideos',
         },
-        {
-          $project: {
-            _id: 1,
-            userName: 1,
-            email: 1,
-            age: 1,
-            address: 1,
-            bio: 1,
-            profilePicture: 1,
-            userVideos: 1,
-          },
+      },
+      {
+        $project: {
+          _id: 1,
+          userName: 1,
+          email: 1,
+          age: 1,
+          address: 1,
+          bio: 1,
+          profilePicture: 1,
+          userVideos: 1,
         },
-      ])
-      .exec();
+      },
+    ]);
     const user = response[0];
-    console.log('a user', user);
     return user;
   }
 

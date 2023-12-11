@@ -16,11 +16,19 @@ type User {
   userName: String!
   email: String!
   password: String!
-  age: Int!
-  address: String!
-  bio: String!
-  profilePicture: String!
-  userVideos: [Cat!]!
+  age: Int
+
+  """user address"""
+  address: String
+
+  """user bio"""
+  bio: String
+
+  """this is user profile picture"""
+  profilePicture: String
+
+  """cat"""
+  userVideos: [Cat!]
 }
 
 type LoginUserResponse {

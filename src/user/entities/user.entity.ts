@@ -21,24 +21,31 @@ export class User {
   @Prop()
   password: string;
 
-  @Field(() => Int)
-  @Prop()
+  @Field(() => Int, { nullable: true })
+  @Prop({ nullable: true, default: null })
   age: number;
 
-  @Field(() => String)
-  @Prop()
+  @Field(() => String, { description: 'user address', nullable: true })
+  @Prop({ nullable: true })
   address: string;
 
-  @Field(() => String)
-  @Prop()
+  @Field(() => String, { description: 'user bio', nullable: true })
+  @Prop({ nullable: true })
   bio: string;
 
-  @Field(() => String)
-  @Prop()
+  @Field(() => String, {
+    description: 'this is user profile picture',
+    nullable: true,
+  })
+  @Prop({ default: null })
   profilePicture?: string;
 
-  @Field(() => [Cat])
-  @Prop({ type: [MongooseSchema.Types.ObjectId], ref: 'Cat' })
+  @Field(() => [Cat], { description: 'cat', nullable: true })
+  @Prop({
+    type: [MongooseSchema.Types.ObjectId],
+    ref: 'Cat',
+    nullable: true,
+  })
   userVideos: Cat[];
 }
 
